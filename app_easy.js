@@ -249,33 +249,83 @@ let seccionesCartelera = [
 }
 ]
 
-//==================================================================================
-/*
-function masVotadas(limite){
-	let listaPeliculasAprobadas = {}
-	if (limite >= 7 ) {
-		forEach (function(i){
-		   listaPeliculasAprobadas.push({  movies.title[i],
-			                               movies.vote_average[i], 
-			                               movies.overview[i],
-		                                 })
+//=====================================MAS VOTADAS=============================================
 
-		});
 
+function mayoresA7(){
+	let total = 0;
+		for(pelis of movies){
+			if (pelis.vote_average >= 7){
+				total++
+			}
+		}
+		return total;
+
+}
+
+function promedio(){
+	let total =0;
+	for(pelis of movies){
+		if (pelis.vote_average >= 7){
+			total= (total + pelis.vote_average)
+		}
 	}
+		return total/mayoresA7();
 }
 
-//==================================================================================
 
-let seccionesMasVotadas: [
-	{ titulo: "Más Votadas"
-},
-{
-	totalDePeliculas:
-}
+let listaMasVotadas = movies.map(function (movies) {
+	if (movies.vote_average >= 7) {
+		return movies.title + ' - ' + movies.vote_average + ' - ' + "(" + movies.overview + ")";
+	}
+	
+})
+
+let listaMasVotadasClean = listaMasVotadas.filter(Boolean);
+
+
+
+
+let masVotadas = [{
+	titulo:"Más votadas",
+	totalPeliculas: mayoresA7(),
+	ratingPromedio: promedio(),
+	listadoPeliculas: listaMasVotadasClean
+}]
+
+
+//=============================SUCURSALES=====================================
+
+let listaSucursales = theaters.map(function(e){
+	return e.name + e.address + e.description;
+});
+
+let seccionesSucursales = [
+	{ titulo : "Nuestras Salas"},
+	{ totalSales : theaters.length},
+	{ listadoDeSalas : listaSucursales}
 ]
 
-*/
+
+//=============================CONTACTO========================================
+
+let seccionesContacto = [
+	{titulo : "Contáctanos"},
+	{contenido : "​¿Tenés algo para contarnos? Nos encanta escuchar a nuestros clientes. Si deseas contactarnos podés escribirnos al siguiente email:	dhmovies@digitalhouse.com o en las redes sociales. Envianos tu consulta,sugerencia o reclamo y será respondido a la brevedad posible. Recordá que también podes consultar la sección de Preguntas Frecuentes para obtener respuestas inmediatas a los problemas más comunes."}
+]
+
+
+//=============================PREGUNTAS FRECUENTES========================================
+
+
+let seccionesPreguntasFrecuentes = [
+
+	{titulo : "Preguntas Frecuentes"},
+	{totalDePreguntas : faqs.length},
+	{listadosDePreguntas : faqs}
+
+]
+
 
 //==================================================================================
 
@@ -296,21 +346,21 @@ http.createServer((req, res) => {
 			break;
 		// Ranking
 		case '/mas-votadas':
-			res.end('Más Votadas');
+			res.end(JSON.stringify(masVotadas, null, " "));
 			break;
 		// Sucursales
 		case '/sucursales':
-			res.end('Sucursales');
+			res.end(JSON.stringify(seccionesSucursales, null, " "));
 			break;
 
 		// Contacto
 		case '/contacto':
-			res.end('Contacto');
+			res.end(JSON.stringify(seccionesContacto, null, " "));
 			break;
 		
 	    // FAqs
 		case '/preguntas-frecuentes':
-			res.end('Preguntas Frecuentes');
+			res.end(JSON.stringify(seccionesPreguntasFrecuentes, null, " "));
 			break;
 
 
