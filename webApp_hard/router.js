@@ -12,7 +12,7 @@ function routeo(url,res){
 			break;
 		// En cartelera
 		case '/en-cartelera':
-			res.end(JSON.stringify(index.caretlera, null, " "));
+			res.end(JSON.stringify(index.cartelera, null, " "));
 			break;
 		// Ranking
 		case '/mas-votadas':
